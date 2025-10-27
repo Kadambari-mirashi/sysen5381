@@ -10,7 +10,7 @@ source .bashrc
 PORT=11434  # Default Ollama port (change as needed)
 # Set environment variable for port
 export OLLAMA_HOST="0.0.0.0:$PORT"
-MODEL="gemma3:latest"  # Small, reputable model (3.3GB)
+MODEL="smollm2:1.7b"  # Small, reputable model (3.3GB)
 SERVER_PID=""
 MODEL_PID=""
 
@@ -54,3 +54,36 @@ echo "$test" | jq '.'
 echo "$test" | jq '.model, .response'
 
 
+test=$(curl -s -X POST http://localhost:$PORT/api/generate \
+    -H "Content-Type: application/json" \
+    -d '{
+        "model": "smollm2:1.7b",
+        "stream": false,
+        "messages": [
+            {
+            "role": "user",
+            "content": "What is the current temperature in London?"
+            }
+        ],
+        "tools": [
+            {
+            "type": "function",
+            "function": {
+                "name": "get_current_weather",
+                "description": "Get the current weather conditions for a given location.",
+                "parameters": {
+                "type": "object",
+                "required": ["location"],
+                "properties": {
+                    "location": {
+                    "type": "string",
+                    "description": "The city and optional state/country, e.g., 'London, UK'"
+                    }
+                }
+                }
+            }
+            }
+        ]
+        }' 2>/dev/null)
+
+echo "$test" | jq '.'

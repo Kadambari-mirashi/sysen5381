@@ -1,0 +1,5 @@
+---
+alwaysApply: true
+---
+
+When coding in R, always use the = sign for assigning objects, instead of the <- sign.

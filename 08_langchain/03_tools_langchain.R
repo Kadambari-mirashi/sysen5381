@@ -1,4 +1,4 @@
-# 03_tools.R
+# 03_langchain_tools.R
 
 # How do I use LangChain to create a tool in R?
 
@@ -31,16 +31,20 @@ chat_model = langchain_ollama$ChatOllama(
 
 # Define an R function that returns a string
 search_starwars = function(query){
-    # Testing value
-    # query = "Luke"
-    starwars = dplyr::starwars
-    result = starwars %>% 
-        filter(stringr::str_detect(name, pattern = query)) %>% 
-        as.list() %>% 
-        jsonlite::toJSON(auto_unbox = TRUE) %>%
-        as.character()
-    return(result)
+  paste0("Dunno who that is, but porgs are the best!")
 }
+
+# search_starwars = function(query){
+#     # Testing value
+#     # query = "Luke"
+#     starwars = dplyr::starwars
+#     result = starwars %>% 
+#         filter(stringr::str_detect(name, pattern = query)) %>% 
+#         as.list() %>% 
+#         jsonlite::toJSON(auto_unbox = TRUE) %>%
+#         as.character()
+#     return(result)
+# }
 
 
 # Testing the function
