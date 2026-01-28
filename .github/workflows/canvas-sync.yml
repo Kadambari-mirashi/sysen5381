@@ -1,0 +1,117 @@
+name: Canvas Assignment Sync
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '**.md'
+
+jobs:
+  sync-canvas:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    
+    steps:
+      - name: Checkout repository and submodules
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 2  # Need at least 2 commits for git diff
+        
+      - name: Set up R
+        uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: 'release'
+        
+      - name: Install R dependencies
+        run: |
+          Rscript -e "install.packages(c('httr2', 'jsonlite', 'dplyr', 'readr'), repos = 'https://cloud.r-project.org')"
+        
+      - name: Detect changed assignment files
+        id: changed-files
+        run: |
+          # Get list of changed .md files
+          CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD | grep -E '\.md$' || true)
+          
+          # Filter to assignment files matching patterns
+          ASSIGNMENT_FILES=""
+          for file in $CHANGED_FILES; do
+            filename=$(basename "$file")
+            if [[ "$filename" =~ ^(ACTIVITY_|LAB_|HOMEWORK|TOOL) ]]; then
+              ASSIGNMENT_FILES="${ASSIGNMENT_FILES}${file}\n"
+            fi
+          done
+          
+          # Remove trailing newline and save to file
+          echo -e "$ASSIGNMENT_FILES" | sed '/^$/d' > changed_assignments.txt
+          
+          # Count files
+          FILE_COUNT=$(wc -l < changed_assignments.txt | tr -d ' ')
+          echo "file_count=$FILE_COUNT" >> $GITHUB_OUTPUT
+          
+          # Display found files (for debugging, but don't log full paths if empty)
+          if [ "$FILE_COUNT" -gt 0 ]; then
+            echo "Found $FILE_COUNT changed assignment file(s):"
+            cat changed_assignments.txt
+          else
+            echo "No changed assignment files found"
+          fi
+        
+      - name: Create .env file
+        run: |
+          echo "CANVAS_API_KEY=${{ secrets.CANVAS_API_KEY }}" > .env
+          # Ensure .env is not logged
+          echo "Created .env file (contents hidden for security)"
+        
+      - name: Create course_config.json
+        run: |
+          cat > course_config.json << EOF
+          {
+            "canvas": {
+              "base_url": "https://canvas.cornell.edu",
+              "course_id": ${{ secrets.CANVAS_COURSE_ID }}
+            },
+            "github": {
+              "repo": "${{ github.repository }}",
+              "branch": "${{ github.ref_name }}"
+            },
+            "files": {
+              "metadata_file": "canvastest/assignments_metadata.json"
+            }
+          }
+          EOF
+          echo "Created course_config.json"
+        
+      - name: Check if assignments_metadata.json exists
+        id: check-metadata
+        run: |
+          if [ -f "canvastest/assignments_metadata.json" ]; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+            echo "Found assignments_metadata.json"
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+            echo "Warning: assignments_metadata.json not found. Creating minimal structure."
+            echo "[]" > canvastest/assignments_metadata.json
+          fi
+        
+      - name: Sync changed files to Canvas
+        if: steps.changed-files.outputs.file_count > 0 && steps.check-metadata.outputs.exists == 'true'
+        run: |
+          # Use the sync script from scripts directory
+          Rscript scripts/sync_changed_files.R \
+            changed_assignments.txt \
+            course_config.json \
+            canvastest/assignments_metadata.json
+        
+      - name: Report skipped (no changed files)
+        if: steps.changed-files.outputs.file_count == 0
+        run: |
+          echo "No assignment files changed. Skipping Canvas sync."
+        
+      - name: Report skipped (no metadata)
+        if: steps.changed-files.outputs.file_count > 0 && steps.check-metadata.outputs.exists == 'false'
+        run: |
+          echo "Warning: assignments_metadata.json not found. Cannot sync files."
+          echo "Please ensure canvastest/assignments_metadata.json exists with github_path mappings."
