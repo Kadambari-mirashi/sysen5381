@@ -21,25 +21,75 @@ jobs:
       
       - name: Setup SSH for private submodule
         run: |
-          # Check if SSH key secret exists (if not, submodule might be public)
-          if [ -z "${{ secrets.SUBMODULE_SSH_KEY }}" ]; then
-            echo "SUBMODULE_SSH_KEY secret not found. Assuming canvastest is public or using HTTPS."
+          # Check if SSH key secret exists and is not empty
+          SSH_KEY="${{ secrets.SUBMODULE_SSH_KEY }}"
+          
+          # Trim whitespace and check if empty
+          SSH_KEY=$(echo "$SSH_KEY" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+          
+          if [ -z "$SSH_KEY" ] || [ "$SSH_KEY" = "" ]; then
+            echo "SUBMODULE_SSH_KEY secret not found or empty. Assuming canvastest is public or using HTTPS."
+            exit 0
+          fi
+          
+          # Validate that the key looks like a valid SSH private key
+          if ! echo "$SSH_KEY" | grep -q "BEGIN.*PRIVATE KEY"; then
+            echo "Warning: SUBMODULE_SSH_KEY does not appear to be a valid SSH private key."
+            echo "Skipping SSH setup. Submodule checkout will use HTTPS."
             exit 0
           fi
           
           mkdir -p ~/.ssh
-          echo "${{ secrets.SUBMODULE_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 700 ~/.ssh
+          
+          # Write the key file, ensuring proper line endings
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          
+          # Validate the key file was created correctly
+          if [ ! -s ~/.ssh/id_rsa ]; then
+            echo "Error: SSH key file is empty or was not created correctly."
+            exit 1
+          fi
+          
+          # Validate key format
+          if ! grep -q "BEGIN.*PRIVATE KEY" ~/.ssh/id_rsa; then
+            echo "Error: SSH key file does not contain valid private key format."
+            exit 1
+          fi
+          
+          # Add GitHub to known hosts
+          ssh-keyscan github.com >> ~/.ssh/known_hosts 2>/dev/null
+          chmod 600 ~/.ssh/known_hosts
+          
+          # Start SSH agent and add key
           eval "$(ssh-agent -s)"
-          ssh-add ~/.ssh/id_rsa
+          
+          # Try to add the key and capture output
+          if ! ssh-add ~/.ssh/id_rsa 2>&1; then
+            echo "Error: Failed to add SSH key to agent."
+            echo "Key file contents (first 100 chars):"
+            head -c 100 ~/.ssh/id_rsa
+            echo ""
+            echo "This may indicate the key is invalid, corrupted, or improperly formatted."
+            exit 1
+          fi
+          
           # Configure git to use SSH for canvastest submodule
           git config --file=.gitmodules submodule.canvastest.url git@github.com:timothyfraser/canvastest.git
+          echo "SSH setup completed successfully."
       
       - name: Checkout submodules
         run: |
           git submodule sync
-          git submodule update --init --recursive || (echo "Submodule checkout failed. If canvastest is private, ensure SUBMODULE_SSH_KEY secret is configured." && exit 1)
+          if ! git submodule update --init --recursive; then
+            echo "Submodule checkout failed."
+            echo "If canvastest is private, ensure:"
+            echo "  1. SUBMODULE_SSH_KEY secret is configured correctly"
+            echo "  2. The SSH key includes BEGIN/END markers and all lines"
+            echo "  3. The deploy key is added to the canvastest repository"
+            exit 1
+          fi
         
       - name: Set up R
         uses: r-lib/actions/setup-r@v2
