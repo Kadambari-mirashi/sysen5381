@@ -61,8 +61,6 @@ The following table lists recommended extensions organized by category. Star rat
 | Markdown Preview Enhanced | Advanced markdown preview with math, diagrams, and more | [Markdown Preview Enhanced](https://marketplace.visualstudio.com/items?itemName=shd101wyy.markdown-preview-enhanced) | ⭐⭐⭐⭐⭐ |
 | Markdown Mermaid | Mermaid diagram support in markdown | [Markdown Mermaid](https://marketplace.visualstudio.com/items?itemName=bierner.markdown-mermaid) | ⭐⭐⭐⭐⭐ |
 | Mermaid Chart | Create and edit Mermaid diagrams | [Mermaid Chart](https://marketplace.visualstudio.com/items?itemName=mermaidchart.vscode-mermaid-chart) | ⭐⭐⭐ |
-| Extension Name | Purpose | Link | Value Rating |
-|:---------------|:--------|:-----|:------------|
 | R | R language support with IntelliSense, debugging, and code execution | [R Extension](https://marketplace.visualstudio.com/items?itemName=reditorsupport.r) | ⭐⭐⭐⭐⭐ |
 | R Syntax | Enhanced R syntax highlighting | [R Syntax](https://marketplace.visualstudio.com/items?itemName=reditorsupport.r-syntax) | ⭐⭐⭐⭐⭐ |
 | Python | Python language support with IntelliSense, linting, debugging, and Jupyter notebooks | [Python Extension](https://marketplace.visualstudio.com/items?itemName=ms-python.python) | ⭐⭐⭐⭐⭐ |
