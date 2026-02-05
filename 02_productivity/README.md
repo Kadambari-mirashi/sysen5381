@@ -26,7 +26,7 @@ Complete these activities in order:
 
 ## Readings
 
-- None.
+- [READ: NYT Bestseller Books](READ_nyt_bestseller_book.md) — What the NYT bestseller lists are and how to use them with the NYT Books API.
 
 ---
 

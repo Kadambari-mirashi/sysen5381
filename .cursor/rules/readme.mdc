@@ -1,0 +1,47 @@
+---
+alwaysApply: false
+---
+# README Files
+
+Apply when creating or editing README markdown files.
+
+## Scope
+
+- **Audience**: Graduate students (systems engineering); some Python/R; new to Git, AI, APIs.
+- **Role**: READMEs are **navigation guides**—concise, not long instructions. Point to activities and files; keep descriptions brief.
+
+## Must Have
+
+1. **Structure** (from `docs/prep/README_template.md`)
+   - Header: banner image, **title** (see Custom styling below), short blockquote.
+   - Table of Contents with relative anchor links, ordered to show completion sequence.
+   - **Activities**: Numbered list with human-readable link text and prefix:
+     - `[ACTIVITY: Title](ACTIVITY_name.md)`, `[READ: Title](READ_name.md)`, `[LAB: Title](LAB_name.md)`.
+     - Indented sub-items for related scripts (e.g. ``[`file.py`](file.py)``).
+   - **Readings**: READ_ links not in the sequence, or `- None.`
+   - Footer: footer image, `← 🏠 [Back to Top](#Table-of-Contents)`.
+
+2. **Links**
+   - All file mentions use relative hyperlinks.
+   - ACTIVITY/READ/LAB: human-readable title + prefix; filename as URL.
+   - Code/scripts: ``[`filename.ext`](path)``.
+
+3. **Style**
+   - Use **bold**, *italics*, and icons (see Custom styling and `docs/prep/icons.md`).
+   - Concise, direct tone. No "obviously", "clearly", "it is critical".
+   - Inline code for file names, commands, functions.
+
+## Custom styling
+
+- **Title**: The main README heading must be **bold** and <u>underline</u>. Example: **<u>README '/folder/filename'</u>** (use a single `#` for the heading level, then wrap the title text in `**<u>...</u>**`).
+- **Icons**: Render all icons in pink. Wrap each icon in a span: `<span style="color: #FF69B4">icon</span>` (e.g. `<span style="color: #FF69B4">🚀</span>`). Use hex `#FF69B4` (hot pink) or `#E91E8C` for a stronger pink.
+
+## Quick Checks
+
+- [ ] Main title is **bold** and <u>underline</u>; all icons wrapped in pink `<span style="color: #FF69B4">...</span>`.
+- [ ] Activities section is numbered and shows order.
+- [ ] Link text uses ACTIVITY:/READ:/LAB: and titles, not raw filenames.
+- [ ] No long paragraphs; refer to activity/lab files for detail.
+- [ ] Back to Top link in footer.
+
+For full template, examples, and checklist, see the **readme_docs** rule.
