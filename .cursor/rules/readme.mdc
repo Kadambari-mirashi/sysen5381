@@ -1,9 +1,9 @@
 ---
 alwaysApply: false
 ---
-# README Files
+# README and READ_ Files
 
-Apply when creating or editing README markdown files.
+Apply when creating or editing README or READ_ markdown files.
 
 ## Scope
 
@@ -33,12 +33,14 @@ Apply when creating or editing README markdown files.
 
 ## Custom styling
 
-- **Title**: The main README heading must be **bold** and <u>underline</u>. Example: **<u>README '/folder/filename'</u>** (use a single `#` for the heading level, then wrap the title text in `**<u>...</u>**`).
-- **Icons**: Render all icons in pink. Wrap each icon in a span: `<span style="color: #FF69B4">icon</span>` (e.g. `<span style="color: #FF69B4">🚀</span>`). Use hex `#FF69B4` (hot pink) or `#E91E8C` for a stronger pink.
+- **Title**: The main heading must be **bold** and <u>underline</u>. Example: **<u>README '/folder/filename'</u>** (use a single `#` for the heading level, then wrap the title text in `**<u>...</u>**`).
+- **Subtitles**: All subsection headings (`##`) must be underlined. Format: `## <u>Subtitle text</u>` or `## **<u>Subtitle text</u>**`.
+- **Icons**: Use **book emojis** in some places (e.g. 📚 📖 for book-related or reading content). No special color; use icons to add visual interest where they fit.
 
 ## Quick Checks
 
-- [ ] Main title is **bold** and <u>underline</u>; all icons wrapped in pink `<span style="color: #FF69B4">...</span>`.
+- [ ] Main title is **bold** and <u>underline</u>; all subtitles (`##`) are <u>underline</u>.
+- [ ] Book emojis (📚 📖) used in some appropriate places.
 - [ ] Activities section is numbered and shows order.
 - [ ] Link text uses ACTIVITY:/READ:/LAB: and titles, not raw filenames.
 - [ ] No long paragraphs; refer to activity/lab files for detail.

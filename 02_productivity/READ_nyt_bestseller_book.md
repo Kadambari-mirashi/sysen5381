@@ -1,8 +1,8 @@
-# <span style="color: #FF69B4">📌</span> READ
+# 📌 READ
 
 ## **<u>NYT Bestseller Books</u>**
 
-<span style="color: #FF69B4">🕒</span> *Estimated Time: 8 minutes*
+🕒 *Estimated Time: 8 minutes*
 
 ---
 
@@ -10,7 +10,7 @@ The **New York Times Best Sellers** lists rank the top-selling books in the Unit
 
 ---
 
-## What the lists are
+## <u>📚 What the lists are</u>
 
 - **Fiction** and **Nonfiction** (combined print and e-book)
 - **Advice, How-To & Miscellaneous**
@@ -22,13 +22,13 @@ Lists are published weekly. Each list shows a fixed number of titles (often 10 o
 
 ---
 
-## How the lists are built
+## <u>📖 How the lists are built</u>
 
 The Times does not disclose exact methodology, but it has stated that the lists reflect **sales** from a variety of reporting retailers (chains, independents, online). They are **curated**: the Times applies its own rules and checks, so the lists are editorial products, not raw sales feeds. That makes them useful for “what’s selling and being talked about” rather than precise market share.
 
 ---
 
-## Using the NYT Books API for bestsellers
+## <u>📚 Using the NYT Books API for bestsellers</u>
 
 In this course you can use the **NYT Books API** (see [The New York Times API](https://developer.nytimes.com/apis)) to fetch bestseller data programmatically. Typical use cases:
 
@@ -40,7 +40,7 @@ The Books API includes endpoints for **lists** (e.g., combined print and e-book 
 
 ---
 
-## Takeaways
+## <u>📖 Takeaways</u>
 
 - **NYT bestseller lists** are weekly, curated rankings based on reported sales.
 - They are useful for understanding **popular books** and for **automating** or **analyzing** that data via the **NYT Books API**.
@@ -52,4 +52,4 @@ The Books API includes endpoints for **lists** (e.g., combined print and e-book 
 
 ---
 
-<span style="color: #FF69B4">←</span> <span style="color: #FF69B4">🏠</span> [Back to Top](#READ)
+← 🏠 [Back to Top](#READ)
