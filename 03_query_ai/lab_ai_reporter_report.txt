@@ -1,0 +1,63 @@
+AI-Generated NYT Bestseller Report
+========================================
+
+**Key Trends Across the Bestseller Lists:**
+
+1. **Top-Performing Genres:**
+   - **Children’s Middle Grade Hardcover**: Ranked #2 with "WONDER" by R.J. Palacio, showing strong sales.
+   - **Young Adult Paperback**: Ranked #6 with "SEE YOU YESTERDAY" by Rachel Lynn Solomon, indicating good demand.
+
+2. **Long-Standing Bestsellers:**
+   - **Children’s Middle Grade Hardcover**: Ranked #3 with "THE HUNGER GAMES" by Suzanne Collins, demonstrating consistent interest over time.
+
+**Notable Patterns in Genres or Authors:**
+
+* **Children’s Fiction & Young Adult Fiction**: Both have consistently high demand for books across all lists and weeks on list, indicating strong reader preference.
+
+3. **Actionable Insight for a Reader Looking for Their Next Book:**
+
+   - **Harry Potter Series by J.K. Rowling**, "Diary of a Wimpy Kid" by Jeff Kinney, "Percy Jackson & The Olympians" by Rick Riordan, and "The Hunger Games" by Suzanne Collins have long-lasting appeal across multiple lists (weeks on list).
+   
+   **Actionable Insight:** If you are looking for your next book in the fantasy genre, consider exploring either of these series. They have stood out as popular choices among readers over time and continue to be relevant despite not being part of the current bestsellers.
+
+--- Data Summary Used ---
+
+NYT Bestseller Data (current week):
+- Total lists: 18
+- Total books: 230
+
+#1 Ranked Books by List:
+list                 | title                | author               | weeks_on_list       
+-----------------------------------------------------------------------------------------
+Combined Print & E-Book Fiction | STOLEN IN DEATH      | J.D. Robb            | 1                   
+Combined Print & E-Book Nonfiction | THE INVISIBLE COUP   | Peter Schweizer      | 3                   
+Hardcover Fiction    | THE CORRESPONDENT    | Virginia Evans       | 15                  
+Hardcover Nonfiction | THE INVISIBLE COUP   | Peter Schweizer      | 3                   
+Paperback Trade Fiction | DEAR DEBBIE          | Freida McFadden      | 2                   
+Paperback Nonfiction | THE BODY KEEPS THE SCORE | Bessel van der Kolk  | 381                 
+Advice, How-To & Miscellaneous | THE LET THEM THEORY  | Mel Robbins          | 59                  
+Children’s Middle Grade Hardcover | UNSETTLING SALAD!    | Aaron Reynolds       | 1                   
+Children’s Picture Books | LITTLE BLUE TRUCK'S VALENTINE | Alice Schertle       | 41                  
+Children’s & Young Adult Series | DIARY OF A WIMPY KID | Jeff Kinney          | 882                 
+Young Adult Hardcover | A STAGE SET FOR VILLAINS | Shannon J. Spann     | 1                   
+Audio Fiction        | THE CORRESPONDENT    | Virginia Evans       | 4                   
+Audio Nonfiction     | STRANGERS            | Belle Burden         | 1                   
+Business             | THE LET THEM THEORY  | Mel Robbins          | 14                  
+Graphic Books and Manga | BIG JIM BELIEVES     | Dav Pilkey           | 3                   
+Mass Market          | HUNTING A KILLER     | Sarah Varland        | 1                   
+Middle Grade Paperback | THE AMAZING GENERATION | Jonathan Haidt and Catherine Price | 2                   
+Young Adult Paperback | SEE YOU YESTERDAY    | Rachel Lynn Solomon  | 1                   
+
+Top 10 Books by Weeks on List (longest-running bestsellers):
+list                 | rank                 | title                | author               | weeks_on_list       
+----------------------------------------------------------------------------------------------------------------
+Children’s & Young Adult Series | 1                    | DIARY OF A WIMPY KID | Jeff Kinney          | 882                 
+Children’s & Young Adult Series | 4                    | HARRY POTTER         | J.K. Rowling         | 881                 
+Children’s & Young Adult Series | 3                    | PERCY JACKSON & THE OLYMPIANS | Rick Riordan         | 814                 
+Children’s Middle Grade Hardcover | 2                    | WONDER               | R.J. Palacio         | 529                 
+Paperback Nonfiction | 6                    | THINKING, FAST AND SLOW | Daniel Kahneman      | 448                 
+Children’s & Young Adult Series | 2                    | THE HUNGER GAMES     | Suzanne Collins      | 409                 
+Paperback Nonfiction | 1                    | THE BODY KEEPS THE SCORE | Bessel van der Kolk  | 381                 
+Advice, How-To & Miscellaneous | 3                    | ATOMIC HABITS        | James Clear          | 324                 
+Children’s & Young Adult Series | 9                    | MAGIC TREE HOUSE     | Mary Pope Osborne    | 319                 
+Paperback Nonfiction | 12                   | BRAIDING SWEETGRASS  | Robin Wall Kimmerer  | 303                 
