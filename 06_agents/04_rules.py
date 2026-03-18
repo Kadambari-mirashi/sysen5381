@@ -106,14 +106,26 @@ role2_with_rules = f"{role2_base}\n\n{format_rules_for_prompt(rules_data_analysi
 result2 = agent_run(role=role2_with_rules, task=result1, model=MODEL, output="text")
 
 # Task 3 - Press Release Agent with Rules -------------------------
-# Base role for the press release agent
-role3_base = "Write a 1-page press release on the currently ongoing shortages, using the information provided by the user."
+# Base role for the press release agent (headline requirement reinforced for small models)
+role3_base = "Write a 1-page press release on the currently ongoing shortages, using the information provided by the user. You MUST begin your response with a single-line headline in ALL CAPS (max 80 characters), then a blank line, then the rest of the press release."
 
 # Add rules to the role
 role3_with_rules = f"{role3_base}\n\n{format_rules_for_prompt(rules_press_release)}"
 
-# Run the agent with rules
-result3 = agent_run(role=role3_with_rules, task=result2, model=MODEL, output="text")
+# Run the agent with rules (instruction in task so model sees it with the content)
+task3 = (
+    "Your response MUST begin with a single headline line in ALL CAPS (max 80 characters), "
+    "then a blank line, then the press release body. Start directly with the headline—no intro. "
+    "Use this analysis:\n\n"
+) + result2
+result3 = agent_run(role=role3_with_rules, task=task3, model=MODEL, output="text")
+
+# Ensure we display an uppercase headline (fallback if model skipped it)
+_lines = result3.strip().split("\n")
+_first = _lines[0].strip() if _lines else ""
+if _first and not _first.isupper():
+    _headline = (_first[:80] if len(_first) > 80 else _first).upper()
+    result3 = _headline + "\n\n" + result3
 
 # Note that the performance of the agent depends significantly on how much context you allow in one call.
 # https://docs.ollama.com/context-length

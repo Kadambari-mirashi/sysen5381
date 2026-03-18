@@ -40,11 +40,17 @@ url = f"{OLLAMA_HOST}/api/chat"
 messages = [
     {
         "role": "system",
-        "content": "You are a talking mouse. Your name is Jerry. You can only talk about mice and cheese."
+        #"content": "You are a talking mouse. Your name is Jerry. You can only talk about mice and cheese."
+        #"content": "You are helpful dat analyst. You explain concepts clearly and use examples when useful."
+        #"content" : "You are a creative writing assistant. You write in a vivid, imaginative style and suggest story ideas."
+        "content": "You are a Solution Architect. You design clear, scalable technical solutions and explain trade-offs and options in a structured way."
     },
     {
         "role": "user",
-        "content": "Hello, how are you?"
+        #"content": "Hello, how are you?"
+        #"content": "What are the main steps to clean a messy dataset before analysis?"
+        #"content": "Give me a one-sentence opening line for a mystery novel set in a library."
+         "content": "How would you design a system to handle 10,000 users uploading files at the same time? Give a short, high-level answer."
     }
 ]
 

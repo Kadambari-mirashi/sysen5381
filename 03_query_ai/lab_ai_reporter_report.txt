@@ -12,13 +12,16 @@ AI-Generated NYT Bestseller Report
 
 **Notable Patterns in Genres or Authors:**
 
-* **Children’s Fiction & Young Adult Fiction**: Both have consistently high demand for books across all lists and weeks on list, indicating strong reader preference.
+* **Children’s Fiction & Young Adult Fiction**: Both have consistently high demand for books across all lists and weeks on list, indicating 
+    strong reader preference.
 
 3. **Actionable Insight for a Reader Looking for Their Next Book:**
 
-   - **Harry Potter Series by J.K. Rowling**, "Diary of a Wimpy Kid" by Jeff Kinney, "Percy Jackson & The Olympians" by Rick Riordan, and "The Hunger Games" by Suzanne Collins have long-lasting appeal across multiple lists (weeks on list).
+   - **Harry Potter Series by J.K. Rowling**, "Diary of a Wimpy Kid" by Jeff Kinney, "Percy Jackson & The Olympians" by Rick Riordan, and 
+     "The Hunger Games" by Suzanne Collins have long-lasting appeal across multiple lists (weeks on list).
    
-   **Actionable Insight:** If you are looking for your next book in the fantasy genre, consider exploring either of these series. They have stood out as popular choices among readers over time and continue to be relevant despite not being part of the current bestsellers.
+   **Actionable Insight:** If you are looking for your next book in the fantasy genre, consider exploring either of these series. 
+     They have stood out as popular choices among readers over time and continue to be relevant despite not being part of the current bestsellers.
 
 --- Data Summary Used ---
 
