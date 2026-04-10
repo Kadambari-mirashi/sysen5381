@@ -47,8 +47,8 @@ load_dotenv()
 # You can use your local API (if you execut runme.py)
 # SERVER = "http://127.0.0.1:8000/mcp"
 # Or you can use my deployed API (or update to yours), assuming you provide a Posit Connect viewer API key.
-SERVER = "https://connect.systems-apps.com/fastapimcp/mcp"
-
+#SERVER = "https://connect.systems-apps.com/fastapimcp/mcp"
+SERVER = "http://127.0.0.1:8000/mcp"
 # ── Helper: send one JSON-RPC request ───────────────────────
 
 def mcp_request(method, params=None, id=1):
@@ -90,6 +90,17 @@ result = mcp_request("tools/call", {
 
 print(result["content"][0]["text"])
 
+# 3b. CALL THE NEW TOOL — filter_dataset ################
+print("# 3b. CALL THE NEW TOOL — filter_dataset ################")
+
+# Call filter_dataset directly to confirm it works.
+# Ask for all mtcars rows where horsepower (hp) >= 200.
+result_filter = mcp_request("tools/call", {
+    "name":      "filter_dataset",
+    "arguments": {"dataset_name": "mtcars", "column": "hp", "min_value": 200}
+})
+
+print(result_filter["content"][0]["text"])
 
 # 4. CONNECT AN LLM TO THE MCP SERVER ####################
 print("# 4. CONNECT AN LLM TO THE MCP SERVER ####################")
@@ -148,7 +159,8 @@ if not ollama_is_running():
 else:
     ## 4c. Ask the LLM a question that requires the tool -----
     print("# 4c. ASK THE LLM A QUESTION THAT REQUIRES THE TOOL ####################")
-    messages = [{"role": "user", "content": "Give me a summary of the mtcars dataset."}]
+    # Ask a question that should trigger filter_dataset (not summarize_dataset).
+    messages = [{"role": "user", "content": "Which cars in mtcars have more than 200 horsepower?"}]
 
     body = {"model": MODEL, "messages": messages, "tools": ollama_tools, "stream": False}
     resp = requests.post(CHAT_URL, json=body)

@@ -51,6 +51,26 @@ def add_two_numbers(x, y):
     """
     return x + y
 
+# Define a second function to be used as a tool
+# This gives the LLM a choice between multiple tools
+def multiply_two_numbers(x, y):
+    """
+    Multiply two numbers together.
+    
+    Parameters:
+    -----------
+    x : float
+        First number
+    y : float
+        Second number
+    
+    Returns:
+    --------
+    float
+        Product of x and y
+    """
+    return x * y
+
 # 2. DEFINE TOOL METADATA ###################################
 
 # Define the tool metadata as a dictionary
@@ -77,46 +97,83 @@ tool_add_two_numbers = {
     }
 }
 
-# 3. CREATE CHAT REQUEST WITH TOOLS ###################################
-
-# Create a simple chat history with a user question that will require the tool
-messages = [
-    {"role": "user", "content": "What is 3 + 2?"}
-]
-
-# Build the request body with tools
-body = {
-    "model": MODEL,
-    "messages": messages,
-    "tools": [tool_add_two_numbers],
-    "stream": False
+# Define tool metadata for the multiply function
+# Same structure as above, but describes multiplication
+tool_multiply_two_numbers = {
+    "type": "function",
+    "function": {
+        "name": "multiply_two_numbers",
+        "description": "Multiply two numbers",
+        "parameters": {
+            "type": "object",
+            "required": ["x", "y"],
+            "properties": {
+                "x": {
+                    "type": "number",
+                    "description": "first number"
+                },
+                "y": {
+                    "type": "number",
+                    "description": "second number"
+                }
+            }
+        }
+    }
 }
 
-# Send the request
-response = requests.post(CHAT_URL, json=body)
-response.raise_for_status()
-result = response.json()
+# 3. CREATE CHAT REQUESTS WITH TOOLS ###################################
 
-# 4. EXECUTE THE TOOL CALL ###################################
+# Both tools are available for every request
+# The LLM picks the right one based on the user's question
+tools = [tool_add_two_numbers, tool_multiply_two_numbers]
 
-# Receive back the tool call
-# The LLM will return a tool_calls array with the function name and arguments
-if "tool_calls" in result.get("message", {}):
-    tool_calls = result["message"]["tool_calls"]
-    
-    # Execute each tool call
-    for tool_call in tool_calls:
-        func_name = tool_call["function"]["name"]
-        raw_args = tool_call["function"].get("arguments", {})
-        # Ollama may return tool arguments either as a JSON string or as an already-parsed dict.
-        # The R version uses native structured objects, so we mirror that behavior here.
-        func_args = json.loads(raw_args) if isinstance(raw_args, str) else raw_args
-        
-        # Get the function from globals and execute it
-        func = globals().get(func_name)
-        if func:
-            output = func(**func_args)
-            print(f"Tool call result: {output}")
-            tool_call["output"] = output
-else:
-    print("No tool calls in response")
+# Friendly labels so we can print descriptive output
+operation_labels = {
+    "add_two_numbers": "Addition",
+    "multiply_two_numbers": "Multiplication"
+}
+operation_symbols = {
+    "add_two_numbers": "+",
+    "multiply_two_numbers": "*"
+}
+
+# Two questions: one that should trigger addition, one multiplication
+questions = [
+    "What is 3 + 2?",
+    "What is 7 * 4?"
+]
+
+# 4. EXECUTE THE TOOL CALLS ###################################
+
+for question in questions:
+    print(f"\nQuestion: {question}")
+
+    # Build and send the request
+    body = {
+        "model": MODEL,
+        "messages": [{"role": "user", "content": question}],
+        "tools": tools,
+        "stream": False
+    }
+    response = requests.post(CHAT_URL, json=body)
+    response.raise_for_status()
+    result = response.json()
+
+    # The LLM returns a tool_calls array with the function name and arguments
+    if "tool_calls" in result.get("message", {}):
+        for tool_call in result["message"]["tool_calls"]:
+            func_name = tool_call["function"]["name"]
+            raw_args = tool_call["function"].get("arguments", {})
+            # Ollama may return args as a JSON string or an already-parsed dict
+            func_args = json.loads(raw_args) if isinstance(raw_args, str) else raw_args
+
+            func = globals().get(func_name)
+            if func:
+                output = func(**func_args)
+                label = operation_labels.get(func_name, func_name)
+                symbol = operation_symbols.get(func_name, "?")
+                x, y = func_args.get("x"), func_args.get("y")
+                print(f"  Tool chosen: {func_name}")
+                print(f"  {label} of {x} {symbol} {y} is {output}")
+    else:
+        print("  No tool calls in response")

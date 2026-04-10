@@ -42,7 +42,29 @@ TOOLS = [
             },
             "required": ["dataset_name"],
         },
-    }
+    },
+    {
+        "name": "filter_dataset",
+        "description": "Filters rows of a dataset where a numeric column meets a minimum threshold. Returns matching rows as JSON.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "dataset_name": {
+                    "type": "string",
+                    "description": "Dataset to filter. Options: 'mtcars' or 'iris'.",
+                },
+                "column": {
+                    "type": "string",
+                    "description": "Numeric column name to filter on (e.g. 'hp', 'mpg', 'Sepal.Length').",
+                },
+                "min_value": {
+                    "type": "number",
+                    "description": "Minimum value (inclusive). Rows where column >= this value are returned.",
+                },
+            },
+            "required": ["dataset_name", "column", "min_value"],
+        },
+    },
 ]
 
 # ── Tool logic (same datasets as R: mtcars, iris via Rdatasets CSV) ──
@@ -65,6 +87,18 @@ def run_tool(name: str, args: dict) -> str:
         summary.index.name = "variable"
         summary.columns = ["mean", "sd", "min", "max"]
         return summary.reset_index().to_json(orient="records", indent=2)
+
+    if name == "filter_dataset":
+        nm = args.get("dataset_name")
+        if nm not in DATASETS:
+            raise ValueError(f"Unknown dataset: '{nm}' — choose 'mtcars' or 'iris'")
+        col = args.get("column")
+        df = DATASETS[nm]
+        if col not in df.columns:
+            raise ValueError(f"Column '{col}' not found. Available: {list(df.columns)}")
+        min_val = args.get("min_value", 0)
+        filtered = df[df[col] >= min_val]
+        return filtered.to_json(orient="records", indent=2)
 
     raise ValueError(f"Unknown tool: {name}")
 

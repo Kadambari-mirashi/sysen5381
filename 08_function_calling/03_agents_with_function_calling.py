@@ -69,6 +69,25 @@ def get_table(df=None):
         df = pd.DataFrame([df])
     return df.to_markdown(index=False)
 
+# Define a third function to calculate the average of a list of numbers
+def calculate_average(numbers):
+    """
+    Calculate the average (mean) of a list of numbers.
+    
+    Parameters:
+    -----------
+    numbers : list
+        A list of numeric values
+    
+    Returns:
+    --------
+    float
+        The arithmetic mean of the input list
+    """
+    if not numbers:
+        return 0.0
+    return sum(numbers) / len(numbers)
+
 # 2. DEFINE TOOL METADATA ###################################
 
 # Define the tool metadata for add_two_numbers
@@ -107,6 +126,27 @@ tool_get_table = {
                 "df": {
                     "type": "object",
                     "description": "The data.frame to convert to a markdown table using pandas to_markdown()"
+                }
+            }
+        }
+    }
+}
+
+# Define the tool metadata for calculate_average
+# The parameter is an array of numbers, not individual args
+tool_calculate_average = {
+    "type": "function",
+    "function": {
+        "name": "calculate_average",
+        "description": "Calculate the average (mean) of a list of numbers",
+        "parameters": {
+            "type": "object",
+            "required": ["numbers"],
+            "properties": {
+                "numbers": {
+                    "type": "array",
+                    "items": {"type": "number"},
+                    "description": "A list of numbers to average"
                 }
             }
         }
@@ -170,5 +210,23 @@ print("Manual Table Creation:")
 manual_table = df.to_markdown(index=False)
 print(manual_table)
 print()
+
+# 6. EXAMPLE 4: TOOL CALL #3 (calculate_average) ###################################
+
+# Try calling tool #3 (calculate_average)
+# Ask the LLM to compute the average of a set of numbers
+messages = [
+    {"role": "user", "content": "What is the average of 10, 20, 30, 40, and 50?"}
+]
+
+resp3 = agent(messages=messages, model=MODEL, output="tools", tools=[tool_calculate_average])
+print("Tool Call #3 Result:")
+print(resp3)
+print()
+
+# Show the output in a readable way
+if isinstance(resp3, list) and len(resp3) > 0:
+    print(f"Average: {resp3[0].get('output', 'No output')}")
+    print()
 
 # Note: We can use the agent() function to rapidly build and test out agents with or without tools.
