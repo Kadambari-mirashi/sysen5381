@@ -21,7 +21,10 @@ library(readr)   # for reading text files
 
 # Load sample AI-generated report text
 # This text should be checked for quality and accuracy
-sample_text = read_file("09_text_analysis/data/sample_reports.txt")
+# Resolve the data path relative to this script's location so it works
+# regardless of which directory you run from
+script_dir = tryCatch(dirname(normalizePath(sys.frames()[[1]]$ofile)), error = function(e) ".")
+sample_text = read_file(file.path(script_dir, "data/sample_reports.txt"))
 
 # Split text into individual reports (reports are separated by blank lines)
 # Remove empty strings and trim whitespace

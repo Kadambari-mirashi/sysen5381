@@ -15,12 +15,14 @@
 
 import pandas as pd  # for data wrangling
 import re  # for string pattern matching and text analysis
+from pathlib import Path
 
 ## 0.2 Load Sample Text #################################
 
 # Load sample AI-generated report text
 # This text should be checked for quality and accuracy
-with open("09_text_analysis/data/sample_reports.txt", "r", encoding="utf-8") as f:
+DATA_DIR = Path(__file__).parent / "data"
+with open(DATA_DIR / "sample_reports.txt", "r", encoding="utf-8") as f:
     sample_text = f.read()
 
 # Split text into individual reports (reports are separated by blank lines)
